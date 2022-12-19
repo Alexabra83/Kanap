@@ -4,22 +4,34 @@
 const API_URL = "http://localhost:3000/api/products";
 
 // FONCTIONS
+
+/**
+ * GET ALL KANAPS
+ */
 function getAllKanaps(){
     fetch(API_URL)
     .then(res => res.json())
     .then(data => displayAllKanaps(data));
 }
 
+/**
+ * DISPLAY ALL KANAPS
+ * @param {object} data 
+ */
 function displayAllKanaps(data){
-    for (let i=0; 1 < data.lenght; i++) {
-        const allKanaps = data[i];
+    for (let i=0; i < data.length; i++) {
+        let allKanaps = data[i];
 
-        let linkProduct = document.createElement("a");
-        linkProduct.href = "./product.html?id=" + allKanaps._id
-        document.getElementById("items").append(linkProduct);
+        let productLink = document.createElement("a");
+        productLink.href = "./product.html?id=" + allKanaps._id
+        document.getElementById("items").append(productLink);
+
+        let productArticle = document.createElement("article");
+        productLink.appendChild(productArticle);
 
         let productImg = document.createElement('img');
-        productImg.src = allKanaps.img;
+        productImg.src = allKanaps.imageUrl;
+        productImg.alt = allKanaps.altTxt;
         productArticle.appendChild(productImg);
     
         let productName = document.createElement('h3');
