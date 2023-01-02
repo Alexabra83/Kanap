@@ -52,38 +52,85 @@ function getAllColors(colors) {
 }
 
 // addEventListener
-/**
-    addToBasket.addEventListener("click", (event) => {
-    event.addToBasket();
-    */
+
     
     function saveBasket(kanap){
-        localStorage.setItem("basket", JSON.stringify(basket));
+        localStorage.setItem("basket", JSON.stringify(kanap));
     }
 
     function getBasket(){
         let basket = localStorage.getItem("basket");
-        if (basket == null){
+        if (basket === null){
             return[];
         }else{
             return JSON.parse(basket);
         }
     }
 
-    function addToBasket(kanap) {
-        let basket = getBasket();
-        let foundKanap = basket.
-        basket.push(kanap);
-        saveBasket(basket);
+    function getQuantity() {
+      let quantity = document.getElementById("quantity").value;
+      quantity = (quantity <= 0) ? 1 : quantity;
+
+      return quantity;
     }
 
+    function getColors() {
+      let colors = document.getElementById("colors").value;
+
+      if (!colors) {
+        alert("veuillez renseigner la couleur");
+        return false;
+
+      }else {
+        return colors;
+      }
+    }
+
+    function addToBasket() {
+        let quantity = getQuantity();
+        let colors = getColors();
+        let basket = getBasket();
+        let kanap = {
+            "id": id,
+            "quantity": quantity,
+            "colors": colors
+        };
+
+        let isInBasket = false;
+
+        for(let i = 0; i < basket.lenght; i++) {
+            if(basket[i].id === kanap.id && basket[i].colors === kanap.colors) {
+                basket[i].quantity = Number(basket[i].quantity) + Number(kanap.quantity);
+                //console.log(basket[i].quantity);
+                isInBasket = true;
+            }
+        }
+
+        if(!isInBasket) {
+            basket.push(kanap);
+        }
+        
+        localStorage.setItem("basket", basket);
+
+        console.log(basket);
 
 
+        /*let foundKanap = basket.find(itemBasket => itemBasket.id == kanap.id);
+        if (foundKanap !== undefined) {
+            foundKanap.quantity++;
+        
+        }else {
+            kanap.quantity = 1;
+            basket.push(kanap);
+        }*/
 
-
-
-
-
+    
+        saveBasket(basket);
+    
+    }
+    
+    getKanap();
+    document.getElementById("addToCart").addEventListener("click", addToBasket);
 
 
 
@@ -112,4 +159,3 @@ function getAllColors(colors) {
 
 // CODE PRINCIPAL
 
-getKanap();
