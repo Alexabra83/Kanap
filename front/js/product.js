@@ -98,13 +98,29 @@ function getAllColors(colors) {
 
         let isInBasket = false;
 
-        for(let i = 0; i < basket.lenght; i++) {
+        /**console.log("coucou");
+        console.log(basket);
+        console.log(basket.length);**/
+        if(basket !== undefined) {
+            basket.forEach(element => {
+                if(element.id === kanap.id && element.colors === kanap.colors) {
+                    element.quantity = Number(element.quantity) + Number(kanap.quantity);
+                    console.log(element.quantity);
+                    isInBasket = true;
+                }
+            });
+        }
+        
+
+        /**for(let i = 0; i < basket.lenght; i++) {
+            console.log("coucou2");
+            console.log(basket[i].id === kanap.id && basket[i].colors === kanap.colors)
             if(basket[i].id === kanap.id && basket[i].colors === kanap.colors) {
                 basket[i].quantity = Number(basket[i].quantity) + Number(kanap.quantity);
-                //console.log(basket[i].quantity);
+                console.log(basket[i].quantity);
                 isInBasket = true;
             }
-        }
+        }**/
 
         if(!isInBasket) {
             basket.push(kanap);
