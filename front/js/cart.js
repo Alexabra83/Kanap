@@ -11,58 +11,52 @@ let id = params.get("id");
 /**
  * GET KANAP
  */
-/**function getBasket(){
-    fetch(API_URL + id)
+function getAllKanaps(){
+    fetch(API_URL)
     .then(res => res.json())
-    .then(data => displayBasket(data));
-}*/
-
-const cart = [];
-
-function itemFromLocalStorage(){
-    const numberOfItems = localStorage.lenght;
-    for (leti = O; i < numberOfItems; i++){
-        let item = localStorage.getItem(localStorage.key(i));
-        let itemObject = JSON.parse(item);
-        cart.push(itemObject);
-    }
+    .then(data => setBasket(data));
 }
 
-cart.forEach((item) => displayItem(item));
+
+function setBasket(apiData){
+    console.log(apiData);
+
+    let basket = localStorage.getItem("basket");
+    basket = JSON.parse(basket);
+    console.log(basket);
+
+// double boucle pour comparé api et panier qui renvoi full cart
+
+    displayItems(fullcart);
+}
+
+
+function displayItems(fullcart){
+    let cartItems = document.querySelector("#cart__items");
+    console.log(cartItems);
+
+    basket.forEach((item) => displayItem(item));
+
+}
 
 function displayItem(item){
-    let image = makeImage(item);
-    displayImage(image);
-    let article = makeArticle(item);
-    displayArcticle(article);
-    let div = makeImageDiv(item);
-    article.appendChild(div);
-}
+    
+    const article = document.createElement("article");
+    const div = document.createElement("div");
+    const image = document.createElement('img');
 
-function displayArcticle(article) {
-    document.querySelector("#cart__items").appendChild(article)
-}
-
-function makeArticle(item){
-    let article = document.createElement("article");
     article.classList.add("cart__item");
     article.dataset.id = item.id;
     article.dataset.color = item.color;
-    return article
-}
-    
-function makeImageDiv(item){
-    let div = document.createElement("div");
     div.classList.add("cart__item__img");
-
-    let image = document.createElement('img');
     image.src = item.imageUrl;
     image.alt = item.altTxt;
+
+    cartItems.appendChild(article);
     div.appendChild(image);
-    return div
 }
 
-
+getAllKanaps();
 
 
 
