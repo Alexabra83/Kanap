@@ -12,50 +12,67 @@ let id = params.get("id");
  * GET KANAP
  */
 function getAllKanaps(){
-    fetch(API_URL)
-    .then(res => res.json())
-    .then(data => setBasket(data));
+  fetch(API_URL)
+  .then(res => res.json())
+  .then(data => setBasket(data));
 }
 
 
 function setBasket(apiData){
-    console.log(apiData);
+  //console.log(apiData);
 
-    let basket = localStorage.getItem("basket");
-    basket = JSON.parse(basket);
-    console.log(basket);
+  let basket = localStorage.getItem("basket");
+  basket = JSON.parse(basket);
+  //console.log(basket);
+}
 
+function getFullCart(apiData){
+
+  let fullcart = getBasket();
+
+  for (let i=0; i < apiData.length; i++){
+    for (let j=0; j < fullcart.length; j++);
+  }
 // double boucle pour comparé api et panier qui renvoi full cart
-
-    displayItems(fullcart);
 }
 
 
 function displayItems(fullcart){
-    let cartItems = document.querySelector("#cart__items");
-    console.log(cartItems);
+  let cartItems = document.querySelector("#cart__items");
+  console.log(cartItems);
 
-    basket.forEach((item) => displayItem(item));
-
+  basket.forEach((item) => displayItem(item));
+  //displayItems(fullcart);
 }
 
 function displayItem(item){
-    
-    const article = document.createElement("article");
-    const div = document.createElement("div");
-    const image = document.createElement('img');
+  console.log(displayItem);
 
-    article.classList.add("cart__item");
-    article.dataset.id = item.id;
-    article.dataset.color = item.color;
-    div.classList.add("cart__item__img");
-    image.src = item.imageUrl;
-    image.alt = item.altTxt;
+  const article = document.createElement("article");
+  const div = document.createElement("div");
+  const image = document.createElement('img');
+  const content = document.createElement("info");
+  const description = document.createElement("description");
 
-    cartItems.appendChild(article);
-    div.appendChild(image);
+  /**article.classList.add("cart__item");*/
+  article.dataset.id = item.id;
+  article.dataset.color = item.color;
+  article.dataset.name = item.name;
+  article.dataset.quantity = item.quantity;
+  article.dataset.price = item.price;
+  div.classList.add("cart__item__img");
+  image.src = item.imageUrl;
+  image.alt = item.altTxt;
+
+  description.className = "cart__item_content__description";
+  console.log(description);
+
+  cartItems.appendChild(article);
+  div.appendChild(image);
+  div.appendChild(content);
+  div.appendChild(description);
 }
-
+displayItem();
 getAllKanaps();
 
 
