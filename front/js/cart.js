@@ -17,7 +17,6 @@ function getAllKanaps(){
   .then(data => setBasket(data));
 }
 
-
 function setBasket(apiData){
   //console.log(apiData);
 
@@ -28,25 +27,26 @@ function setBasket(apiData){
 
 function getFullCart(apiData){
 
-  let fullcart = getBasket();
+  let fullcart = setBasket();
 
   for (let i=0; i < apiData.length; i++){
     for (let j=0; j < fullcart.length; j++);
   }
 // double boucle pour comparé api et panier qui renvoi full cart
 }
+//console.log(getFullCart)
 
 
 function displayItems(fullcart){
   let cartItems = document.querySelector("#cart__items");
-  console.log(cartItems);
-
+  //console.log(cartItems);
   basket.forEach((item) => displayItem(item));
-  //displayItems(fullcart);
+
+  displayItems(fullcart);
 }
 
 function displayItem(item){
-  console.log(displayItem);
+  //console.log(displayItem);
 
   const article = document.createElement("article");
   const div = document.createElement("div");
@@ -54,18 +54,16 @@ function displayItem(item){
   const content = document.createElement("info");
   const description = document.createElement("description");
 
-  /**article.classList.add("cart__item");*/
+  article.classList.add("cart__item");
   article.dataset.id = item.id;
   article.dataset.color = item.color;
-  article.dataset.name = item.name;
-  article.dataset.quantity = item.quantity;
-  article.dataset.price = item.price;
+  
   div.classList.add("cart__item__img");
   image.src = item.imageUrl;
   image.alt = item.altTxt;
 
   description.className = "cart__item_content__description";
-  console.log(description);
+  //console.log(description);
 
   cartItems.appendChild(article);
   div.appendChild(image);
