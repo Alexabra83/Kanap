@@ -18,61 +18,101 @@ function getAllKanaps(){
 }
 
 function setBasket(apiData){
-  //console.log(apiData);
 
   let basket = localStorage.getItem("basket");
   basket = JSON.parse(basket);
-  //console.log(basket);
-}
+  let fullBasket = [];
 
-function getFullCart(apiData){
-
-  let fullcart = setBasket();
+console.log(apiData);
 
   for (let i=0; i < apiData.length; i++){
-    for (let j=0; j < fullcart.length; j++);
+    for (let j=0; j < basket.length; j++){
+
+      if (apiData[i]._id === basket[j].id){
+
+        basket[j].altTxt = apiData[i].altTxt;
+        basket[j].colors = apiData[i].colors;
+        basket[j].description = apiData[i].description;
+        basket[j].imageUrl = apiData[i].imageUrl;
+        basket[j].name = apiData[i].name;
+        basket[j].price = apiData[i].price;
+
+//ajouter les elements manquant , noms, alt, alttxt
+
+        //console.log(basket[j]);
+        fullBasket.push(basket[j]);
+      }
+    }
   }
-// double boucle pour comparé api et panier qui renvoi full cart
+  displayItems(fullBasket);
 }
-//console.log(getFullCart)
 
 
-function displayItems(fullcart){
-  let cartItems = document.querySelector("#cart__items");
+
+function displayItems(basket){
   //console.log(cartItems);
   basket.forEach((item) => displayItem(item));
-
-  displayItems(fullcart);
 }
 
 function displayItem(item){
-  //console.log(displayItem);
+  //console.log(item);
+  let cartItems = document.querySelector("#cart__items");
 
-  const article = document.createElement("article");
-  const div = document.createElement("div");
-  const image = document.createElement('img');
-  const content = document.createElement("info");
-  const description = document.createElement("description");
+  let productArticle = document.createElement("article");
+    cartItems.appendChild(productArticle);
 
-  article.classList.add("cart__item");
-  article.dataset.id = item.id;
-  article.dataset.color = item.color;
+    let productImg = document.createElement('img');
+    productImg.src = item.imageUrl;
+    productImg.alt = item.altTxt;
+    productImg.style.width = '25%';
+    productImg.style.borderRadius = '25px';
+    productArticle.appendChild(productImg);
+
+    let productName = document.createElement('h2');
+    productName.innerText = item.name;
+    productArticle.appendChild(productName);
+
+    let productColors = document.createElement('p');
+    productColors.innerText = item.colors;
+    productArticle.appendChild(productColors);
+
+    let productPrice = document.createElement('p')
+    productPrice.innerText = item.price + " €";
+    productArticle.appendChild(productPrice);
+
+    let itemQuantity = document.createElement('p');
+    itemQuantity.innerText = item.quantity;
+    productArticle.appendChild(itemQuantity);
+    let input = document.createElement("input");
+    input.type= "number";
+    input.classList.add("itemQuantity");
+    input.name = "itemQuantity";
+    input.min = "1";
+    input.max = "100";
   
-  div.classList.add("cart__item__img");
-  image.src = item.imageUrl;
-  image.alt = item.altTxt;
-
-  description.className = "cart__item_content__description";
-  //console.log(description);
-
-  cartItems.appendChild(article);
-  div.appendChild(image);
-  div.appendChild(content);
-  div.appendChild(description);
 }
-displayItem();
-getAllKanaps();
 
+function makeSettings(item){
+  //console.log(makeSettings);
+  let settings = document.createElement("div");
+  settings.classList.add("cart__item__content__settings");
+
+  deleteSettings(settings);
+}
+
+function deleteSettings(settings){
+  let deleteButton = document.createElement("div");
+  deleteButton.classList.add(cart__item__content__settings__delete);
+  div.appendChild("div");
+  let deleteItem = document.createElement("p");
+  deleteItem.innertext = "Supprimer";
+  settings.appendChild("p");
+
+}
+
+makeSettings();
+deleteSettings();
+getAllKanaps();
 
 
 
