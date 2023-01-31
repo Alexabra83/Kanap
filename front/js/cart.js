@@ -23,7 +23,7 @@ function setBasket(apiData){
   basket = JSON.parse(basket);
   let fullBasket = [];
 
-console.log(apiData);
+//console.log(apiData);
 
   for (let i=0; i < apiData.length; i++){
     for (let j=0; j < basket.length; j++){
@@ -80,19 +80,37 @@ function displayItem(item){
     productPrice.innerText = item.price + " €";
     productArticle.appendChild(productPrice);
 
-    let itemQuantity = document.createElement('p');
-    itemQuantity.innerText = item.quantity;
-    productArticle.appendChild(itemQuantity);
-    let input = document.createElement("input");
-    input.type= "number";
-    input.classList.add("itemQuantity");
-    input.name = "itemQuantity";
-    input.min = "1";
-    input.max = "100";
-  
+    
+    let inputQuantity = document.createElement("input");
+    inputQuantity.type= "number";
+    inputQuantity.classList.add("itemQuantity");
+    inputQuantity.name = "itemQuantity";
+    inputQuantity.min = "1";
+    inputQuantity.max = "100";
+    inputQuantity.value = item.quantity;
+    //let itemQuantity = document.createElement('p');
+    //itemQuantity.innerText = inputQuantity.quantity;
+    productArticle.appendChild(inputQuantity);
+
 }
 
-function makeSettings(item){
+function deleteItem(id){
+  let basket = localStorage.getItem("basket");
+  basket = JSON.parse(basket);
+  console.log(typeof basket);
+
+  for (let i=0; i < basket.length; i++){
+      if (basket[i].id === id){
+        basket.splice(i, 1);
+      }
+  }
+  console.log(basket);
+}
+
+
+
+
+/**function makeSettings(item){
   //console.log(makeSettings);
   let settings = document.createElement("div");
   settings.classList.add("cart__item__content__settings");
@@ -108,11 +126,9 @@ function deleteSettings(settings){
   deleteItem.innertext = "Supprimer";
   settings.appendChild("p");
 
-}
+}*/
 
-makeSettings();
-deleteSettings();
-getAllKanaps();
+
 
 
 
@@ -148,3 +164,8 @@ getAllKanaps();
 /** }
 
 /** quantité final + prix */
+
+getAllKanaps();
+deleteItem("415b7cacb65d43b2b5c1ff70f3393ad1");
+//makeSettings();
+//deleteSettings();
