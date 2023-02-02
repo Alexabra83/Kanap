@@ -30,9 +30,6 @@ function setBasket(apiData){
 
       if (apiData[i]._id === basket[j].id){
 
-        basket[j].altTxt = apiData[i].altTxt;
-        basket[j].colors = apiData[i].colors;
-        basket[j].description = apiData[i].description;
         basket[j].imageUrl = apiData[i].imageUrl;
         basket[j].name = apiData[i].name;
         basket[j].price = apiData[i].price;
@@ -90,11 +87,49 @@ function displayItem(item){
     inputQuantity.value = item.quantity;
     //let itemQuantity = document.createElement('p');
     //itemQuantity.innerText = inputQuantity.quantity;
-    productArticle.appendChild(inputQuantity);
+    let labelQuantity = document.createElement("label");
+    labelQuantity.innerText = "Qte: ";
+    labelQuantity.appendChild(inputQuantity);
+    productArticle.appendChild(labelQuantity);
 
+    let deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Supprimer";
+    deleteBtn.style.height = '30px';
+    deleteBtn.style.width = '110px';
+    deleteBtn.classList.add("deleteItem");
+    productArticle.appendChild(deleteBtn);
 }
 
-function deleteItem(id){
+function deleteItem(){
+  let deleteItems = document.querySelectorAll("deleteItem");
+      deleteItems.forEach((btn) => {
+        btn.addEventListener('click', e => {
+          deleteItemSelect(e, item);
+        })
+      }
+      )
+}
+
+function deleteItemSelect(e, item)
+  let index = e.target.classList[1].slice();
+      item.splice(index, 1);
+      localStorage.setItem('basket', JSON.stringify(item));
+
+      if (item.length === 0) {
+        localStorage.removeItem('basket');
+      }
+
+
+/**function deleteItem(id){
+
+  let deleteItems = document.createElement("div");
+    let p = document.createElement("p");
+    deleteItems.classList.add("deleteItem");
+    p.textContent = "Supprimer";
+    deleteItems.appendChild('p');
+
+
+
   let basket = localStorage.getItem("basket");
   basket = JSON.parse(basket);
   console.log(typeof basket);
@@ -105,7 +140,7 @@ function deleteItem(id){
       }
   }
   console.log(basket);
-}
+}*/
 
 
 
@@ -166,6 +201,6 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
-deleteItem("415b7cacb65d43b2b5c1ff70f3393ad1");
-//makeSettings();
-//deleteSettings();
+deleteItem();
+deleteItem();
+deleteItemSelect();
