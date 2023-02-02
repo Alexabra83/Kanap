@@ -100,25 +100,24 @@ function displayItem(item){
     productArticle.appendChild(deleteBtn);
 }
 
+
 function deleteItem(){
-  let deleteItems = document.querySelectorAll("deleteItem");
-      deleteItems.forEach((btn) => {
-        btn.addEventListener('click', e => {
-          deleteItemSelect(e, item);
-        })
-      }
-      )
+  let deleteItems = document.querySelectorAll(".deleteItem");
+  deleteItems.forEach((btn, index) => {
+    btn.addEventListener('click', e => {
+      deleteItemSelect(e, basket[index]);
+    });
+  });
 }
 
-function deleteItemSelect(e, item)
-  let index = e.target.classList[1].slice();
-      item.splice(index, 1);
-      localStorage.setItem('basket', JSON.stringify(item));
+function deleteItemSelect(e, item) {
+  basket = basket.filter(i => i._id !== item._id);
+  localStorage.setItem('basket', JSON.stringify(basket));
 
-      if (item.length === 0) {
-        localStorage.removeItem('basket');
-      }
-
+  if (basket.length === 0) {
+    localStorage.removeItem('basket');
+  }
+}
 
 /**function deleteItem(id){
 
@@ -201,6 +200,3 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
-deleteItem();
-deleteItem();
-deleteItemSelect();
