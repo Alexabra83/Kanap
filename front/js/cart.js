@@ -119,6 +119,19 @@ function deleteItemSelect(e, item) {
   }
 }
 
+function totalPrice(){
+  let totalPriceCalcul = 0;
+  let basket = localStorage.getItem("basket");
+  basket = JSON.parse(basket);
+  console.log(basket.length);
+  for (let p = 0; p < basket.length; p++){
+    totalPriceCalcul = Number(totalPriceCalcul) + Number(basket[p].price);
+    console.log(basket[p]);
+  }
+  console.log(totalPriceCalcul);
+
+}
+
 /**function deleteItem(id){
 
   let deleteItems = document.createElement("div");
@@ -200,3 +213,4 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
+totalPrice();
