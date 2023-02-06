@@ -83,22 +83,15 @@ function getColors() {
   }
 }
 
-function getPrice(){
-  let price = document.getElementById("price").innerText;
-  return price;
-}
-
 
 function addToBasket() {
   let quantity = getQuantity();
   let colors = getColors();
-  let price = getPrice();
   let basket = getBasket();
   let kanap = {
     "id": id,
     "quantity": quantity,
-    "colors": colors,
-    "price" : price,
+    "colors": colors
   };
 
 let isInBasket = false;

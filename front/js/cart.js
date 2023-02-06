@@ -121,16 +121,17 @@ function modifQuantity(item_id, quantity){
 }
 
 
-function deleteItem(){
+function addDeleteAction(){
   //console.log("bouuuu");
-
+  let basket = localStorage.getItem("basket");
+  basket = JSON.parse(basket);
   let deleteItems = document.getElementsByClassName("deleteItem");
-  //console.log(deleteItems[0]);
-  //console.log(deleteItems[1]);
-  Array.from(deleteItems).forEach((btn, index) => {
-    btn.addEventListener('click', e => {
-      deleteItemSelect(e, basket[index]);
-    });
+  console.log(typeof deleteItems, deleteItems);
+  deleteItems.forEach((btn, index) => {
+    console.log(typeof basket, basket);
+      console.log(typeof index, index);
+      console.log(typeof basket[index], basket[index]);
+    btn.addEventListener('click', deleteItemSelect(e, basket[index]));
   });
 }
 
@@ -156,12 +157,12 @@ function totalPrice(){
   let totalPriceCalcul = 0;
   let basket = localStorage.getItem("basket");
       basket = JSON.parse(basket);
-      //console.log(basket.length);
+      console.log(basket.length);
   for (let p = 0; p < basket.length; p++){
     totalPriceCalcul = Number(totalPriceCalcul) + Number(basket[p].price);
-    //console.log(basket[p]);
+    console.log(basket[p]);
   }
-  //console.log(totalPriceCalcul);
+  console.log(totalPriceCalcul);
 
   let basketTotalPrice = document.getElementById("totalPrice");
       basketTotalPrice.innertext = totalPriceCalcul;
@@ -248,6 +249,6 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
-deleteItem();
+addDeleteAction();
 totalQuantity();
 totalPrice();
