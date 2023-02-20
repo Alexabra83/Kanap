@@ -122,21 +122,16 @@ function modifQuantity(item_id, quantity){
 
 
 function addDeleteAction(){
-  //console.log("bouuuu");
   let basket = localStorage.getItem("basket");
   basket = JSON.parse(basket);
   let deleteItems = document.getElementsByClassName("deleteItem");
   console.log(typeof deleteItems, deleteItems);
   deleteItems.forEach((btn, index) => {
-    console.log(typeof basket, basket);
-      console.log(typeof index, index);
-      console.log(typeof basket[index], basket[index]);
     btn.addEventListener('click', deleteItemSelect(e, basket[index]));
   });
 }
 
 function deleteItemSelect(e, item) {
-  //console.log(deleteItem);
   basket = basket.filter(i => i._id !== item._id);
   localStorage.setItem('basket', JSON.stringify(basket));
 
