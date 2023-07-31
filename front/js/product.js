@@ -87,12 +87,12 @@ function getColors() {
 function addToBasket() {
   let quantity = getQuantity();
   let colors = getColors();
-  if (corlors === false){
+  if (colors === false){
     return
   };
   let basket = getBasket();
   let kanap = {
-    "id": id,
+    "_id": id,
     "quantity": quantity,
     "colors": colors
   };

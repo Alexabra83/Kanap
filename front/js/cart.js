@@ -5,6 +5,7 @@
 const API_URL = "http://localhost:3000/api/products/";
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
+let basket = localStorage.getItem("basket");
 
 // FONCTIONS
 
@@ -18,26 +19,25 @@ function getAllKanaps(){
 }
 
 function setBasket(apiData){
-
-  let basket = localStorage.getItem("basket");
   basket = JSON.parse(basket);
   let fullBasket = [];
 
 //console.log(apiData);
 
-  for (let i=0; i < apiData.length; i++){
-    for (let j=0; j < basket.length; j++){
+  for (let i=0; i < basket.length; i++){
+    console.log(apiData, basket[i]);
+    for (let j=0; j < apiData.length; j++){
 
-      if (apiData[i]._id === basket[j].id){
+      if (apiData[j]._id === basket[i]._id){
 
-        basket[j].imageUrl = apiData[i].imageUrl;
-        basket[j].name = apiData[i].name;
-        basket[j].price = apiData[i].price;
+        basket[i].imageUrl = apiData[j].imageUrl;
+        basket[i].name = apiData[j].name;
+        basket[i].price = apiData[j].price;
 
 //ajouter les elements manquant , noms, alt, alttxt
 
-        //console.log(basket[j]);
-        fullBasket.push(basket[j]);
+
+        fullBasket.push(basket[i]);
       }
     }
   }
@@ -47,16 +47,17 @@ function setBasket(apiData){
 
 
 function displayItems(basket){
-  //console.log(cartItems);
+  console.log(basket);
   basket.forEach((item) => displayItem(item));
 }
 
 function displayItem(item){
-  //console.log(item);
   let cartItems = document.querySelector("#cart__items");
 
   let productArticle = document.createElement("article");
     cartItems.appendChild(productArticle);
+    productArticle.dataset.id = item._id;
+    productArticle.dataset.colors = item.colors;
 
     let productImg = document.createElement('img');
     productImg.src = item.imageUrl;
@@ -99,6 +100,9 @@ function displayItem(item){
     productArticle.appendChild(labelQuantity);
 
     let deleteBtn = document.createElement("button");
+    deleteBtn.addEventListener("click", function(){
+      deleteItemSelect(item);
+    })
     deleteBtn.innerText = "Supprimer";
     deleteBtn.style.height = '30px';
     deleteBtn.style.width = '110px';
@@ -109,8 +113,6 @@ function displayItem(item){
 function modifQuantity(item_id, quantity){
   //console.log(item_id);
   //console.log(quantity);
-  let basket = localStorage.getItem("basket");
-      basket = JSON.parse(basket);
       for (let q = 0; q < basket.length; q++){
         if (basket[q].id === item_id){
           basket[q].quantity = quantity;
@@ -122,22 +124,26 @@ function modifQuantity(item_id, quantity){
 
 
 function addDeleteAction(){
-  let basket = localStorage.getItem("basket");
-  basket = JSON.parse(basket);
   let deleteItems = document.getElementsByClassName("deleteItem");
-  console.log(typeof deleteItems, deleteItems);
-  deleteItems.forEach((btn, index) => {
-    btn.addEventListener('click', deleteItemSelect(e, basket[index]));
-  });
+  
+  for (let i = 0; i < deleteItems.length; i++){
+    console.log(deleteItems);
+    const index = i;
+    deleteItems [i].addEventListener("click", function(e){
+      deleteItemSelect(e, basket[index]);
+    })
+  }
 }
 
-function deleteItemSelect(e, item) {
-  basket = basket.filter(i => i._id !== item._id);
+function deleteItemSelect(item) {
+  basket = basket.filter(i => i._id !== item._id || i.colors !== item.colors);
   localStorage.setItem('basket', JSON.stringify(basket));
-
+  console.log(item);
+  const article = document.querySelector("[data-id='" + item._id + "']" + "[data-colors='" + item.colors + "']");
+  console.log(article);
+  article.remove();
   if (basket.length === 0) {
     localStorage.removeItem('basket');
-
   }
 }
 
@@ -244,6 +250,5 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
-addDeleteAction();
 totalQuantity();
 totalPrice();
