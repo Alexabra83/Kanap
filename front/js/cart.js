@@ -6,7 +6,9 @@ const API_URL = "http://localhost:3000/api/products/";
 let params = new URL(document.location).searchParams;
 let id = params.get("id");
 let basket = localStorage.getItem("basket");
-
+let fullBasket = [];
+let quantity = 0;
+let price = 0;
 // FONCTIONS
 
 /**
@@ -20,12 +22,10 @@ function getAllKanaps(){
 
 function setBasket(apiData){
   basket = JSON.parse(basket);
-  let fullBasket = [];
 
 //console.log(apiData);
-
   for (let i=0; i < basket.length; i++){
-    console.log(apiData, basket[i]);
+    quantity += Number(basket[i].quantity);
     for (let j=0; j < apiData.length; j++){
 
       if (apiData[j]._id === basket[i]._id){
@@ -34,6 +34,8 @@ function setBasket(apiData){
         basket[i].name = apiData[j].name;
         basket[i].price = apiData[j].price;
 
+    price += Number(basket[i].price) * Number(basket[i].quantity);
+
 //ajouter les elements manquant , noms, alt, alttxt
 
 
@@ -41,6 +43,8 @@ function setBasket(apiData){
       }
     }
   }
+  totalQuantity();
+  totalPrice();
   displayItems(fullBasket);
 }
 
@@ -93,7 +97,7 @@ function displayItem(item){
 
     inputQuantity.addEventListener("input", e => {
       //console.log(e.target.value);
-      modifQuantity(item.id, e.target.value);
+      modifQuantity(item.id, item.colors, e.target.value);
     })
 
     labelQuantity.appendChild(inputQuantity);
@@ -110,12 +114,22 @@ function displayItem(item){
     productArticle.appendChild(deleteBtn);
 }
 
-function modifQuantity(item_id, quantity){
+function modifQuantity(item_id, item_colors, newQuantity){
   //console.log(item_id);
   //console.log(quantity);
-      for (let q = 0; q < basket.length; q++){
-        if (basket[q].id === item_id){
-          basket[q].quantity = quantity;
+      for (let q = 0; q < fullBasket.length; q++){
+        if (fullBasket[q].id === item_id && fullBasket[q].colors === item_colors){
+          if (fullBasket[q].quantity < newQuantity){
+            quantity ++;
+            price += Number(fullBasket[q].price);
+          }
+          else{
+            quantity --;
+            price -= Number(fullBasket[q].price);
+          }
+          totalQuantity();
+          totalPrice();
+          basket[q].quantity = newQuantity;
         };
       };
       //console.log(basket);
@@ -130,44 +144,38 @@ function addDeleteAction(){
     console.log(deleteItems);
     const index = i;
     deleteItems [i].addEventListener("click", function(e){
-      deleteItemSelect(e, basket[index]);
+      deleteItemSelect(e, fullBasket[index]);
     })
   }
 }
 
 function deleteItemSelect(item) {
   basket = basket.filter(i => i._id !== item._id || i.colors !== item.colors);
+  fullBasket = fullBasket.filter(i => i._id !== item._id || i.colors !== item.colors);
   localStorage.setItem('basket', JSON.stringify(basket));
-  console.log(item);
   const article = document.querySelector("[data-id='" + item._id + "']" + "[data-colors='" + item.colors + "']");
-  console.log(article);
   article.remove();
   if (basket.length === 0) {
     localStorage.removeItem('basket');
   }
+  price -= Number(item.price) * Number(item.quantity);
+  quantity -= Number(item.quantity);
+  totalPrice();
+  totalQuantity();
 }
 
 function totalQuantity(){
-  let basket = localStorage.getItem("basket");
-      basket = JSON.parse(basket);
   let articleQuantity = document.getElementById("totalQuantity");
-      articleQuantity.innerText = basket.length;
+      articleQuantity.innerText = quantity;
 }
 
 function totalPrice(){
-  let totalPriceCalcul = 0;
-  let basket = localStorage.getItem("basket");
-      basket = JSON.parse(basket);
-      console.log(basket.length);
-  for (let p = 0; p < basket.length; p++){
-    totalPriceCalcul = Number(totalPriceCalcul) + Number(basket[p].price);
-    console.log(basket[p]);
-  }
-  console.log(totalPriceCalcul);
 
   let basketTotalPrice = document.getElementById("totalPrice");
-      basketTotalPrice.innertext = totalPriceCalcul;
+      basketTotalPrice.innerText = price;
 }
+
+
 
 /**function deleteItem(id){
 
@@ -250,5 +258,5 @@ function deleteSettings(settings){
 /** quantité final + prix */
 
 getAllKanaps();
-totalQuantity();
-totalPrice();
+//totalQuantity();
+//totalPrice();
