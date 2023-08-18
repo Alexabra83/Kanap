@@ -191,6 +191,7 @@ orderForm.addEventListener("submit", function(e){
   if(isValidFirstName === false){
     firstNameErrorMsg.innerText= "Prénom mal formaté";
   }
+// faire les autre erreur
 });
 
 /**function deleteItem(id){
