@@ -175,7 +175,23 @@ function totalPrice(){
       basketTotalPrice.innerText = price;
 }
 
+const orderForm = document.querySelector(".cart__order__form");
+orderForm.addEventListener("submit", function(e){
+  e.preventDefault()
+  const firstNameInput = document.querySelector('#firstName');
+  let isValidFirstName = /^[a-zA-Z \-']+$/.test(firstNameInput.value);
+  const lastNameInput = document.querySelector('#lastName');
+  let isValidLastName = /^[a-zA-Z \-']+$/.test(lastNameInput.value);
+  const addressInput = document.querySelector('#address');
+  let isValidAddress = /^[a-zA-Z0-9\s,'-]*$/.test(addressInput.value);
+// faire les autres
 
+  const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
+  firstNameErrorMsg.innerText = '';
+  if(isValidFirstName === false){
+    firstNameErrorMsg.innerText= "Prénom mal formaté";
+  }
+});
 
 /**function deleteItem(id){
 
