@@ -184,15 +184,41 @@ orderForm.addEventListener("submit", function(e){
   let isValidLastName = /^[a-zA-Z \-']+$/.test(lastNameInput.value);
   const addressInput = document.querySelector('#address');
   let isValidAddress = /^[a-zA-Z0-9\s,'-]*$/.test(addressInput.value);
-// faire les autres
+  const cityInput = document.querySelector('#city');
+  let isValidCity = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(cityInput.value);
+  const emailInput = document.querySelector('#email');
+  let isValidEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailInput.value);
 
   const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
   firstNameErrorMsg.innerText = '';
   if(isValidFirstName === false){
     firstNameErrorMsg.innerText= "Prénom mal formaté";
   }
-// faire les autre erreur
+  const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
+  lastNameErrorMsg.innerText = '';
+  if(isValidLastName === false){
+    lastNameErrorMsg.innerText= "Nom mal formaté";
+  }
+  const addressErrorMsg = document.querySelector('#addressErrorMsg');
+  addressErrorMsg.innerText = '';
+  if(isValidAddress === false){
+  addressErrorMsg.innerText= "Adresse mal formaté";
+  }
+  const cityErrorMsg = document.querySelector('#cityErrorMsg');
+  cityErrorMsg.innerText = '';
+  if(isValidCity === false){
+    cityErrorMsg.innerText= "Ville mal Formaté";
+  }
+  const emailErrorMsg = document.querySelector('#emailErrorMsg');
+  emailErrorMsg.innerText = '';
+  if(isValidEmail === false){
+    emailErrorMsg.innerText= "Entrée un E-mail valide";
+  }
 });
+
+getAllKanaps();
+//totalQuantity();
+//totalPrice();
 
 /**function deleteItem(id){
 
@@ -273,7 +299,3 @@ function deleteSettings(settings){
 /** }
 
 /** quantité final + prix */
-
-getAllKanaps();
-//totalQuantity();
-//totalPrice();
