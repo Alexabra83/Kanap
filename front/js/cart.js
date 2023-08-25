@@ -21,7 +21,11 @@ function getAllKanaps(){
 }
 
 function setBasket(apiData){
-  basket = JSON.parse(basket);
+  if (basket) {
+    basket = JSON.parse(basket)
+  } else {
+    basket = []
+  }
 
 //console.log(apiData);
   for (let i=0; i < basket.length; i++){
@@ -189,31 +193,88 @@ orderForm.addEventListener("submit", function(e){
   const emailInput = document.querySelector('#email');
   let isValidEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailInput.value);
 
+  let errors = 0;
+
   const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
   firstNameErrorMsg.innerText = '';
   if(isValidFirstName === false){
     firstNameErrorMsg.innerText= "Prénom mal formaté";
+    errors ++
   }
   const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
   lastNameErrorMsg.innerText = '';
   if(isValidLastName === false){
     lastNameErrorMsg.innerText= "Nom mal formaté";
+    errors ++
   }
   const addressErrorMsg = document.querySelector('#addressErrorMsg');
   addressErrorMsg.innerText = '';
   if(isValidAddress === false){
   addressErrorMsg.innerText= "Adresse mal formaté";
+    errors ++
   }
   const cityErrorMsg = document.querySelector('#cityErrorMsg');
   cityErrorMsg.innerText = '';
   if(isValidCity === false){
     cityErrorMsg.innerText= "Ville mal Formaté";
+      errors++
   }
   const emailErrorMsg = document.querySelector('#emailErrorMsg');
   emailErrorMsg.innerText = '';
   if(isValidEmail === false){
     emailErrorMsg.innerText= "Entrée un E-mail valide";
+      errors ++
   }
+
+  if (errors > 0) {
+    return
+  }
+
+  const productIds = [];
+
+  for( let i = 0; i < basket.length; i++){
+    productIds.push(basket[i]._id)
+  }
+
+  const order = {
+    contact: {
+      firstName: firstNameInput.value,
+      lastName: lastNameInput.value,
+      address: addressInput.value,
+      city: cityInput.value,
+      email: emailInput.value
+    },
+    products: productIds
+  };
+
+  fetch(API_URL+ "order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(order)
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.location.href = "./confirmation.html?orderId=" + data.orderId
+  });
+
+  /**
+ *
+ * Expects request to contain:
+ * contact: {
+ *   firstName: string,
+ *   lastName: string,
+ *   address: string,
+ *   city: string,
+ *   email: string
+ * }
+ * products: [string] <-- array of product _id
+ *
+ */
+
+
+
 });
 
 getAllKanaps();
