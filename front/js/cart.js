@@ -27,7 +27,6 @@ function setBasket(apiData){
     basket = []
   }
 
-//console.log(apiData);
   for (let i=0; i < basket.length; i++){
     quantity += Number(basket[i].quantity);
     for (let j=0; j < apiData.length; j++){
@@ -41,7 +40,6 @@ function setBasket(apiData){
     price += Number(basket[i].price) * Number(basket[i].quantity);
 
 //ajouter les elements manquant , noms, alt, alttxt
-
 
         fullBasket.push(basket[i]);
       }
@@ -94,13 +92,10 @@ function displayItem(item){
     inputQuantity.min = "1";
     inputQuantity.max = "100";
     inputQuantity.value = item.quantity;
-    //let itemQuantity = document.createElement('p');
-    //itemQuantity.innerText = inputQuantity.quantity;
     let labelQuantity = document.createElement("label");
     labelQuantity.innerText = "Qte: ";
 
     inputQuantity.addEventListener("input", e => {
-      //console.log(e.target.value);
       modifQuantity(item.id, item.colors, e.target.value);
     })
 
@@ -119,8 +114,6 @@ function displayItem(item){
 }
 
 function modifQuantity(item_id, item_colors, newQuantity){
-  //console.log(item_id);
-  //console.log(quantity);
       for (let q = 0; q < fullBasket.length; q++){
         if (fullBasket[q].id === item_id && fullBasket[q].colors === item_colors){
           if (fullBasket[q].quantity < newQuantity){
@@ -136,7 +129,6 @@ function modifQuantity(item_id, item_colors, newQuantity){
           basket[q].quantity = newQuantity;
         };
       };
-      //console.log(basket);
       localStorage.setItem('basket', JSON.stringify(basket));
 }
 
@@ -179,19 +171,12 @@ function totalPrice(){
       basketTotalPrice.innerText = price;
 }
 
-const orderForm = document.querySelector(".cart__order__form");
-orderForm.addEventListener("submit", function(e){
-  e.preventDefault()
-  const firstNameInput = document.querySelector('#firstName');
-  let isValidFirstName = /^[a-zA-Z \-']+$/.test(firstNameInput.value);
-  const lastNameInput = document.querySelector('#lastName');
-  let isValidLastName = /^[a-zA-Z \-']+$/.test(lastNameInput.value);
-  const addressInput = document.querySelector('#address');
-  let isValidAddress = /^[a-zA-Z0-9\s,'-]*$/.test(addressInput.value);
-  const cityInput = document.querySelector('#city');
-  let isValidCity = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(cityInput.value);
-  const emailInput = document.querySelector('#email');
-  let isValidEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailInput.value);
+function checkIfFieldsErrors(firstName, lastName, address, city, email){
+  let isValidFirstName = /^[a-zA-Z \-']+$/.test(firstName.value);
+  let isValidLastName = /^[a-zA-Z \-']+$/.test(lastName.value);
+  let isValidAddress = /^[a-zA-Z0-9\s,'-]*$/.test(address.value);
+  let isValidCity = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city.value);
+  let isValidEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value);
 
   let errors = 0;
 
@@ -227,8 +212,24 @@ orderForm.addEventListener("submit", function(e){
   }
 
   if (errors > 0) {
-    return
+    return true
+  }else{
+    return false
   }
+}
+
+const orderForm = document.querySelector(".cart__order__form");
+orderForm.addEventListener("submit", function(e){
+  e.preventDefault()
+  const firstNameInput = document.querySelector('#firstName');
+  const lastNameInput = document.querySelector('#lastName');
+  const addressInput = document.querySelector('#address');
+  const cityInput = document.querySelector('#city');
+  const emailInput = document.querySelector('#email');
+
+if(checkIfFieldsErrors(firstNameInput, lastNameInput, addressInput, cityInput, emailInput)){
+  return;
+}
 
   const productIds = [];
 
@@ -258,105 +259,6 @@ orderForm.addEventListener("submit", function(e){
   .then(data => {
     document.location.href = "./confirmation.html?orderId=" + data.orderId
   });
-
-  /**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */
-
-
-
 });
 
 getAllKanaps();
-//totalQuantity();
-//totalPrice();
-
-/**function deleteItem(id){
-
-  let deleteItems = document.createElement("div");
-    let p = document.createElement("p");
-    deleteItems.classList.add("deleteItem");
-    p.textContent = "Supprimer";
-    deleteItems.appendChild('p');
-
-
-
-  let basket = localStorage.getItem("basket");
-  basket = JSON.parse(basket);
-  console.log(typeof basket);
-
-  for (let i=0; i < basket.length; i++){
-      if (basket[i].id === id){
-        basket.splice(i, 1);
-      }
-  }
-  console.log(basket);
-}*/
-
-
-
-
-/**function makeSettings(item){
-  //console.log(makeSettings);
-  let settings = document.createElement("div");
-  settings.classList.add("cart__item__content__settings");
-
-  deleteSettings(settings);
-}
-
-function deleteSettings(settings){
-  let deleteButton = document.createElement("div");
-  deleteButton.classList.add(cart__item__content__settings__delete);
-  div.appendChild("div");
-  let deleteItem = document.createElement("p");
-  deleteItem.innertext = "Supprimer";
-  settings.appendChild("p");
-
-}*/
-
-
-
-
-
-/**function getBasket() {
-    let cart = localStorage.getItem("basket");
-
-    return JSON.parse(cart);
-}
- function getCart(cartKanap)
-    let cart = getBasket();
-
-    for (let i = 0; i < colors.length; i++){
-        
-    }
-
-/** information kanap panier */
-/**function displaycart(kanap){
-
-    /**cart item 
-    let productImg = document.createElement('article');
-    let divItemImg = document.querySelector('.cart__item__img');
-    divItemImg.appendChild(productImg);
-
-    /**cart item content 
-    let productName = document.getElementById('title');
-    productName.innerText = kanap.name;
-    
-    /**cart content descrption 
-    let productDescription = document.getElementById('description');
-    productDescription.innerText = kanap.description;
-
-    /**bouton supprimer */
-/** }
-
-/** quantité final + prix */
