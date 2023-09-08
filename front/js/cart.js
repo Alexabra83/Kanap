@@ -53,7 +53,6 @@ function setBasket(apiData){
 
 
 function displayItems(basket){
-  console.log(basket);
   basket.forEach((item) => displayItem(item));
 }
 
@@ -137,7 +136,6 @@ function addDeleteAction(){
   let deleteItems = document.getElementsByClassName("deleteItem");
   
   for (let i = 0; i < deleteItems.length; i++){
-    console.log(deleteItems);
     const index = i;
     deleteItems [i].addEventListener("click", function(e){
       deleteItemSelect(e, fullBasket[index]);

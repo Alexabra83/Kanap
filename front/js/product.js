@@ -103,7 +103,6 @@ if(basket !== undefined) {
   basket.forEach(element => {
     if(element.id === kanap.id && element.colors === kanap.colors) {
       element.quantity = Number(element.quantity) + Number(kanap.quantity);
-      console.log(element.quantity);
       isInBasket = true;
     }
   });
@@ -114,7 +113,6 @@ if(!isInBasket) {
 }
 
 localStorage.setItem("basket", basket);
-console.log(basket);
 saveBasket(basket);
 }
 
